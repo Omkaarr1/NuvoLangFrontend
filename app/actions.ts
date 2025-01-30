@@ -1,18 +1,16 @@
-"use server"
+"use server";
 
-import { runCodeAPI } from "./api/runCode/route"
+import { runCodeAPI } from "@/app/api/runCodeAPI/runCodeAPI";
 
 export async function runCode(code: string) {
   try {
-    const result = await runCodeAPI(code)
-    return result
+    return await runCodeAPI(code);
   } catch (error) {
-    console.error("Error running code:", error)
+    console.error("Error running code:", error);
     return {
       message: "Error running code",
       compileOutput: "Error: Failed to run code",
       output: "",
-    }
+    };
   }
 }
-
