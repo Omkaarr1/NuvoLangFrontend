@@ -1,19 +1,26 @@
+import axios from 'axios';
+
 export async function runCodeAPI(code: string) {
-    try {
-      const response = await fetch("http://localhost:8080/runCode", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code }),
-      });
-  
-      if (!response.ok) {
-        throw new Error("Failed to execute code");
+  try {
+    const response = await axios.post(
+      'https://nuvolang.onrender.com/runCode',
+      { code },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }
-  
-      return await response.json();
-    } catch (error) {
-      console.error("Error executing code:", error);
-      throw error;
+    );
+
+    // Axios automatically parses JSON responses
+    return response.data;
+  } catch (error) {
+    // Axios errors have a different structure
+    if (axios.isAxiosError(error)) {
+      console.error('Error executing code:', error.response?.data || error.message);
+    } else {
+      console.error('Unexpected error:', error);
     }
+    throw error;
   }
-  
+}
